@@ -23,8 +23,10 @@ spec:
           recurse: true
       destination:
         server: https://kubernetes.default.svc
-        namespace: default   # only used if a manifest doesn't set its own namespace
+        namespace: main # this is the name of the namespace created in apps/edge/namespace.yaml
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
