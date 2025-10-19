@@ -6,7 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.global-static-ip-name: "gke-ingress-ip"
-    networking.gke.io/managed-certificates: "main-cert"
+    networking.gke.io/managed-certificates: "tonyrizzotto-site-cert"
 spec:
   rules:
   - host: tonyrizzotto.com
