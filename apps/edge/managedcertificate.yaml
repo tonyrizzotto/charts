@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: tonyrizzotto-site-cert
+  namespace: main
+spec:
+  domains:
+    - tonyrizzotto.com

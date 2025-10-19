@@ -1,15 +1,10 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: demo
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello
-  namespace: demo
+  namespace: main
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: hello
@@ -28,7 +23,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello
-  namespace: demo
+  namespace: main
 spec:
   type: NodePort
   selector:
@@ -37,34 +32,3 @@ spec:
   - name: http
     port: 80
     targetPort: 8080
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: hello-cert
-  namespace: demo
-spec:
-  domains:
-    - tonyrizzotto.com
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hello
-  namespace: demo
-  annotations:
-    kubernetes.io/ingress.class: "gce"
-    kubernetes.io/ingress.global-static-ip-name: "gke-ingress-ip"
-    networking.gke.io/managed-certificates: "hello-cert"
-spec:
-  rules:
-  - host: tonyrizzotto.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: hello
-            port:
-              number: 80
