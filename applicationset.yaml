@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps-from-folders
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/tonyrizzotto/charts.git
+        revision: main
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/tonyrizzotto/charts.git
+        targetRevision: main
+        path: 'apps/{{path.basename}}'
+        directory:
+          recurse: true
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default   # only used if a manifest doesn't set its own namespace
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
