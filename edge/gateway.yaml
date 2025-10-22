@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: public-gw
+  namespace: edge
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  addresses:
+    - type: NamedAddress
+      value: gke-ingress-ip
+  listeners:
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: tonyrizzotto.com
+      tls:
+        mode: Terminate
+        options:
+          networking.gke.io/pre-shared-certs: tonyrizzotto-com
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              gateway-access: "public"
